@@ -1,31 +1,41 @@
 # Java Encapsulation Cheat Sheet
 
-Encapsulation in Java is the practice of **hiding internal data** (variables) and **controlling access** through **public methods**. This makes code safe, maintainable, and flexible.
+**Encapsulation** in Java is the practice of **hiding the internal details** of a class (its variables) and **providing public methods** to access or update them safely.  
+It helps **protect data**, **apply validation**, and **make code maintainable**.
 
 ---
 
-## Key Concepts
+## Key Points
 
-| Concept           | Explanation / Example |
-|------------------|----------------------|
-| **Encapsulation** | Hiding internal data (`private`) and controlling access via methods (`public`). |
-| **Private variable** | `private int salary;` – cannot access directly outside the class. |
-| **Public setter** | `public void setSalary(int s) { salary = s; }` – safely updates value. |
-| **Public getter** | `public int getSalary() { return salary; }` – safely reads value. |
-| **Validation** | Inside setter: `if(s >= 0) salary = s; else System.out.println("Invalid");` |
+- **Private variables** store internal data.
+- **Public setters** allow controlled updates.
+- **Public getters** allow controlled reading.
+- Can include **validation** inside setters.
 
 ---
 
-## Examples
+## Small Example
 
-### BankAccount
 ```java
-private float balance;
+class Student {
+    private int marks; // hidden variable
 
-void setBalance(float b) {
-    if(b >= 0) balance = b;
+    // setter with validation
+    public void setMarks(int m) {
+        if(m >= 0 && m <= 100) marks = m;
+        else System.out.println("Marks must be 0-100");
+    }
+
+    // getter to read marks
+    public int getMarks() {
+        return marks;
+    }
 }
 
-void getBalance() {
-    System.out.println(balance);
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.setMarks(85);             // update safely
+        System.out.println(s.getMarks()); // read safely
+    }
 }
