@@ -1,2 +1,3 @@
 ## Note : 
-### Explanation of every sorting algorithm is in the top of each file in the form of comments
+### Note: Each sorting algorithm is explained at the top of its file in the form of comments.
+
