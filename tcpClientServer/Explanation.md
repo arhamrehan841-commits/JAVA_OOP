@@ -1,100 +1,64 @@
 # Java TCP Client-Server Chat Application
 
-This project demonstrates a simple TCP-based chat application in Java. It consists of a **Server** and a **Client** program that communicate over a network socket. The chat continues until either side sends the message `"bye"`.
-
----
-
-## Table of Contents
-1. [Overview](#overview)
-2. [Files](#files)
-3. [How It Works](#how-it-works)
-4. [Code Explanation](#code-explanation)
-   - [Server.java](#serverjava)
-   - [Client.java](#clientjava)
-5. [Running the Program](#running-the-program)
-6. [Sample Output](#sample-output)
+This project demonstrates a simple TCP-based chat application in Java, consisting of a **Server** and a **Client**. They communicate over a network socket until either side sends `"bye"` to end the chat.
 
 ---
 
 ## Overview
 
-- The **Server** listens on a specific port for incoming client connections.
-- The **Client** connects to the server using the server's IP and port.
-- Both can send and receive messages.
-- The chat ends when either the server or client types `"bye"`.
-
----
-
-## Files
-
-1. **Server.java** – Implements the server-side of the chat.
-2. **Client.java** – Implements the client-side of the chat.
+- **Server**: Listens on a port for incoming connections from clients.
+- **Client**: Connects to the server using the server's IP address and port.
+- Both can **send and receive messages** in real-time.
+- Chat continues in a loop until either the server or client types `"bye"`.
 
 ---
 
 ## How It Works
 
-1. **Server** creates a `ServerSocket` and waits for a connection using `accept()`.
-2. **Client** creates a `Socket` to connect to the server.
-3. Both server and client use:
-   - `DataInputStream` to read incoming messages.
-   - `DataOutputStream` to send messages.
-   - `BufferedReader` to read user input from the console.
-4. A `while(true)` loop handles sending and receiving messages.
-5. If either side sends `"bye"`, the chat session ends, and all resources are closed.
+1. **Server Setup**:
+   - The server creates a `ServerSocket` and waits for a client connection using `accept()`.
+   - Once a client connects, a `Socket` is created for communication.
+
+2. **Client Setup**:
+   - The client creates a `Socket` to connect to the server.
+   - Connection is established using the server's IP (e.g., `localhost`) and port number.
+
+3. **Message Exchange**:
+   - Both server and client use input/output streams:
+     - `DataInputStream` or equivalent to **read incoming messages**.
+     - `DataOutputStream` or equivalent to **send messages**.
+   - User input is taken from the console using a reader (like `BufferedReader`).
+
+4. **Chat Loop**:
+   - The program runs a continuous loop:
+     - Receive a message from the other side.
+     - Display it on the console.
+     - Take user input for the next message.
+     - Send it to the other side.
+   - The loop continues **until `"bye"` is sent or received**, which ends the chat.
+
+5. **Closing Resources**:
+   - After the chat ends, all streams and sockets are properly closed to free system resources.
 
 ---
 
-## Code Explanation
+## Key Points
 
-### Server.java
+- **Port and IP**: Server listens on a specific port; client must use the same port and server IP.
+- **Real-time Communication**: Messages are sent and received immediately.
+- **Termination Condition**: Chat ends cleanly when either side types `"bye"`.
+- **Resource Management**: Always close sockets and streams after the chat to avoid resource leaks.
+- **Local Testing**: Can run on the same machine using `localhost`, or across machines on a network using the server's IP.
 
-```java
-import java.io.*;
-import java.net.*;
+---
 
-public class Server {
-    public static void main(String[] args) throws Exception {
-        ServerSocket ss = new ServerSocket(1000); // Server listens on port 1000
-        System.out.println("Looking for a client....");
-        Socket s = ss.accept(); // Accept connection from client
-        System.out.println("Connection successfully established\n");
+## Running the Program
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+1. Start the **server** first; it waits for a client to connect.
+2. Start the **client**, which connects to the server.
+3. Begin chatting in the console.
+4. Type `"bye"` on either side to end the chat.
 
-        String fromClient = "";
-        String toClient = "";
+---
 
-        while(true) {
-            // Receive message from client
-            fromClient = dis.readUTF();
-            System.out.println("Client : " + fromClient);
-
-            // Check if client wants to end chat
-            if(fromClient.equalsIgnoreCase("bye")) {
-                System.out.print("\nChat ended by client");
-                break;
-            }
-
-            // Send message to client
-            System.out.print("Server : ");
-            toClient = in.readLine();
-            dos.writeUTF(toClient);
-
-            // Check if server wants to end chat
-            if(toClient.equalsIgnoreCase("bye")) {
-                System.out.print("\nChat ended by server");
-                break;
-            }
-        }
-
-        // Close all resources
-        in.close();
-        dis.close();
-        dos.close();
-        s.close();
-        ss.close();
-    }
-}
+This setup provides a simple yet complete example of a **TCP client-server communication in Java**, suitable for learning networking fundamentals and basic socket programming.
