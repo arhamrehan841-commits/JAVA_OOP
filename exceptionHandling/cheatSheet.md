@@ -32,7 +32,7 @@ Exception handling in Java allows you to handle runtime errors gracefully and ke
 
 ---
 
-✅ **Quick Notes**
+## ✅ Quick Notes
 - **Checked Exceptions:** Must be handled or declared using `throws`.
 - **Unchecked Exceptions:** Occur at runtime (don’t need to be declared).
 - `catch(Exception e)` → catches all exceptions.
