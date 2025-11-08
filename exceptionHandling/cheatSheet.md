@@ -37,5 +37,3 @@ Exception handling in Java allows you to handle runtime errors gracefully and ke
 - **Unchecked Exceptions:** Occur at runtime (don’t need to be declared).
 - `catch(Exception e)` → catches all exceptions.
 - Always close files or resources in the `finally` block.
-
----
