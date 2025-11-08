@@ -39,5 +39,3 @@ Exception handling in Java allows you to handle runtime errors gracefully and ke
 - Always close files or resources in the `finally` block.
 
 ---
-
-**Perfect for quick revision ⚡**
