@@ -2,12 +2,12 @@
 // Sorts by moving the sorted part to the left 
 
 // Key points
-// 1)Outer loop gioes from i=1 to i<array.length \
-// 2)Variable named Current = array[i]
-// 3)j=i-1
-// 4)Inner loop has two conditions j>=0 && current<array[j]
-// 5)If inner loop runs it does array[j+1] = array[j] and j--
-// 6)If inner loop doesn't runs then array[j+1] = current
+// 1)Outer loop goes from i=1 to i<array.length \
+//   Current = array[i]
+//   j=i-1
+// 2)Inner loop has two conditions j>=0 && current<array[j]
+// 3)If inner loop runs it does array[j+1] = array[j] and j--
+// 4)If inner loop doesn't runs then array[j+1] = current
 
 
 public class InsertionSort {
