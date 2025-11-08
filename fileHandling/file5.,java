@@ -1,0 +1,29 @@
+// File: MultiplicationTables.java
+// This program saves multiplication tables from 1 to 5 in a file called "tables.txt".
+
+import java.io.*;
+
+public class MultiplicationTables {
+
+    public static void main(String[] args) {
+
+        String tables = "";
+
+        // Generate multiplication tables
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 10; j++) {
+                tables += i + " x " + j + " = " + (i * j) + "\n";
+            }
+            tables += "\n"; // Separate tables with a blank line
+        }
+
+        try {
+            FileWriter writer = new FileWriter("tables.txt");
+            writer.write(tables);
+            System.out.println("Multiplication tables written successfully.");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
