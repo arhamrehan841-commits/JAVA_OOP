@@ -1,96 +1,100 @@
-# 💬 Java TCP Chat Application
+# Java TCP Client-Server Chat Application
 
-A simple **Client-Server chat system** built using **Java TCP sockets**.  
-The client and server can send messages to each other until either side types **"bye"**, which ends the chat for both.
-
----
-
-## 📁 Project Structure
-
-📦 TCP_Chat_App
-┣ 📜 Server.java
-┣ 📜 Client.java
-┗ 📜 README.md
-
-yaml
-Copy code
+This project demonstrates a simple TCP-based chat application in Java. It consists of a **Server** and a **Client** program that communicate over a network socket. The chat continues until either side sends the message `"bye"`.
 
 ---
 
-## 🚀 How It Works
-
-- **Server.java**
-  - Listens for client connections on port `1000`.
-  - Receives and sends messages to the connected client.
-  - Ends chat when either user sends `"bye"`.
-
-- **Client.java**
-  - Connects to the server running on `localhost` (port `1000`).
-  - Allows two-way message exchange.
-  - Ends chat when either side types `"bye"`.
+## Table of Contents
+1. [Overview](#overview)
+2. [Files](#files)
+3. [How It Works](#how-it-works)
+4. [Code Explanation](#code-explanation)
+   - [Server.java](#serverjava)
+   - [Client.java](#clientjava)
+5. [Running the Program](#running-the-program)
+6. [Sample Output](#sample-output)
 
 ---
 
-## ⚙️ How to Run
+## Overview
 
-### 1️⃣ Compile both programs
-```bash
-javac Server.java
-javac Client.java
-2️⃣ Start the Server
-bash
-Copy code
-java Server
-You’ll see:
+- The **Server** listens on a specific port for incoming client connections.
+- The **Client** connects to the server using the server's IP and port.
+- Both can send and receive messages.
+- The chat ends when either the server or client types `"bye"`.
 
-css
-Copy code
-Looking for a client....
-3️⃣ Start the Client (in another terminal)
-bash
-Copy code
-java Client
-You’ll see:
+---
 
-nginx
-Copy code
-Connection successfully established
-Now start chatting between the two terminals!
+## Files
 
-💬 Example Conversation
-Server Side
+1. **Server.java** – Implements the server-side of the chat.
+2. **Client.java** – Implements the client-side of the chat.
 
-arduino
-Copy code
-Looking for a client....
-Connection successfully established
+---
 
-Client : Hello
-Server : Hi there!
-Client : bye
-Chat ended by client
-Client Side
+## How It Works
 
-arduino
-Copy code
-Connection successfully established
+1. **Server** creates a `ServerSocket` and waits for a connection using `accept()`.
+2. **Client** creates a `Socket` to connect to the server.
+3. Both server and client use:
+   - `DataInputStream` to read incoming messages.
+   - `DataOutputStream` to send messages.
+   - `BufferedReader` to read user input from the console.
+4. A `while(true)` loop handles sending and receiving messages.
+5. If either side sends `"bye"`, the chat session ends, and all resources are closed.
 
-Client : Hello
-Server : Hi there!
-Client : bye
-Chat ended by client
-🧠 Key Concepts
-Concept	Description
-ServerSocket	Creates a server that listens for connections.
-Socket	Used by the client to connect to the server.
-DataInputStream / DataOutputStream	For sending and receiving UTF messages.
-BufferedReader	For reading user input from console.
-equalsIgnoreCase("bye")	Used to check for chat termination command.
+---
 
-🪄 Notes
-Make sure Server runs before the Client.
+## Code Explanation
 
-Both must use the same port number (1000).
+### Server.java
 
-Works locally (localhost), but you can use an IP address to connect over a network.
+```java
+import java.io.*;
+import java.net.*;
 
+public class Server {
+    public static void main(String[] args) throws Exception {
+        ServerSocket ss = new ServerSocket(1000); // Server listens on port 1000
+        System.out.println("Looking for a client....");
+        Socket s = ss.accept(); // Accept connection from client
+        System.out.println("Connection successfully established\n");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        DataInputStream dis = new DataInputStream(s.getInputStream());
+        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+        String fromClient = "";
+        String toClient = "";
+
+        while(true) {
+            // Receive message from client
+            fromClient = dis.readUTF();
+            System.out.println("Client : " + fromClient);
+
+            // Check if client wants to end chat
+            if(fromClient.equalsIgnoreCase("bye")) {
+                System.out.print("\nChat ended by client");
+                break;
+            }
+
+            // Send message to client
+            System.out.print("Server : ");
+            toClient = in.readLine();
+            dos.writeUTF(toClient);
+
+            // Check if server wants to end chat
+            if(toClient.equalsIgnoreCase("bye")) {
+                System.out.print("\nChat ended by server");
+                break;
+            }
+        }
+
+        // Close all resources
+        in.close();
+        dis.close();
+        dos.close();
+        s.close();
+        ss.close();
+    }
+}
